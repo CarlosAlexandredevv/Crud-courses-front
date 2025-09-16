@@ -1,60 +1,49 @@
 import { Screen } from '../components/Screen/screen';
 import { Header } from '../components/Header/header';
-import { CardMetrics } from '../components/CardMetrics/card-metrics';
 import { View, Text } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../lib/axios';
 import { GetCoursesResponse } from '../types/get-courses-response';
-import { InputSearch } from '../components/ui/InputSearch/input-search';
 import { useState } from 'react';
-import { ButtonSearch } from '../components/ui/ButtonSearch/button-search';
+import { SearchBar } from '../components/SearchBar/search-bar';
+import { MetricsGroup } from '../components/MetricsGroup/metrics-group';
 
 export default function Home() {
   const [search, setSearch] = useState('');
-  const { data } = useQuery<GetCoursesResponse>({
+  const { data, refetch } = useQuery<GetCoursesResponse>({
     queryKey: ['courses'],
     queryFn: async () => {
-      const response = await api.get('/courses');
+      const response = await api.get('/courses', { params: { search } });
       return response.data;
     },
   });
 
+  function onSearch() {
+    refetch();
+  }
+
   function clearSearch() {
     setSearch('');
+    refetch();
   }
 
   return (
     <Screen className="bg-zinc-900 p-6">
       <View className="flex flex-col gap-6">
         <Header />
-        <View className="flex-row gap-4">
-          <CardMetrics
-            value={data?.totalItems ?? 0}
-            title="Total"
-            color="white"
-          />
-          <CardMetrics value={data?.active ?? 0} title="Ativos" color="green" />
-          <CardMetrics
-            value={data?.inactive ?? 0}
-            title="Inativos"
-            color="red"
-          />
-        </View>
-        <View className="gap-4">
-          <InputSearch
-            placeholder="Pesquisar curso"
-            value={search}
-            onChangeText={setSearch}
-          />
-          <View className="flex-row gap-2 ml-auto">
-            <ButtonSearch variant="secondary" onPress={clearSearch}>
-              <Text>Limpar</Text>
-            </ButtonSearch>
-            <ButtonSearch variant="default" onPress={clearSearch}>
-              <Text>Filtrar</Text>
-            </ButtonSearch>
-          </View>
-        </View>
+
+        <MetricsGroup
+          total={data?.totalItems ?? 0}
+          active={data?.active ?? 0}
+          inactive={data?.inactive ?? 0}
+        />
+
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+          onSearch={onSearch}
+          onClear={clearSearch}
+        />
       </View>
     </Screen>
   );

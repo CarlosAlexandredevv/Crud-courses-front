@@ -1,7 +1,7 @@
-import { TextInput } from 'react-native';
+import { TextInput, TextInputProps } from 'react-native';
 import { useState } from 'react';
 
-interface InputSearchProps {
+interface InputSearchProps extends Omit<TextInputProps, 'onChange'> {
   placeholder?: string;
   value?: string;
   onChangeText?: (text: string) => void;
@@ -11,6 +11,7 @@ export function InputSearch({
   placeholder,
   value,
   onChangeText,
+  ...rest
 }: InputSearchProps) {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -29,6 +30,7 @@ export function InputSearch({
       onBlur={() => setIsFocused(false)}
       value={value}
       onChangeText={onChangeText}
+      {...rest}
     />
   );
 }

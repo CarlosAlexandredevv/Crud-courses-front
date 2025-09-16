@@ -1,17 +1,16 @@
-import { TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity, Text, TouchableOpacityProps } from 'react-native';
 
-interface ButtonSearchProps {
+interface ButtonSearchProps extends TouchableOpacityProps {
   children: React.ReactNode;
   className?: string;
-  onPress?: () => void;
   variant?: 'default' | 'secondary';
 }
 
 export function ButtonSearch({
   children,
   className,
-  onPress,
   variant = 'default',
+  ...rest
 }: ButtonSearchProps) {
   const variantClass = {
     default: 'bg-purple-800',
@@ -20,8 +19,8 @@ export function ButtonSearch({
 
   return (
     <TouchableOpacity
-      className={`rounded-md px-6 py-4 ${variantClass[variant]} ${className}`}
-      onPress={onPress}
+      className={`rounded-md px-6 py-4 ${variantClass[variant]} ${className ?? ''}`}
+      {...rest}
     >
       <Text className="text-white font-semibold">{children}</Text>
     </TouchableOpacity>
