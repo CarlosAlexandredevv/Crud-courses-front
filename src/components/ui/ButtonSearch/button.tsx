@@ -1,17 +1,17 @@
 import { TouchableOpacity, Text, TouchableOpacityProps } from 'react-native';
 
-interface ButtonSearchProps extends TouchableOpacityProps {
+interface ButtonProps extends TouchableOpacityProps {
   children: React.ReactNode;
   className?: string;
   variant?: 'default' | 'secondary';
 }
 
-export function ButtonSearch({
+export function Button({
   children,
   className,
   variant = 'default',
   ...rest
-}: ButtonSearchProps) {
+}: ButtonProps) {
   const variantClass = {
     default: 'bg-purple-800',
     secondary: 'bg-zinc-800',

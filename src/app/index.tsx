@@ -1,19 +1,21 @@
 import { Screen } from '../components/Screen/screen';
 import { Header } from '../components/Header/header';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../lib/axios';
 import { GetCoursesResponse } from '../types/get-courses-response';
 import { useState } from 'react';
 import { SearchBar } from '../components/SearchBar/search-bar';
 import { MetricsGroup } from '../components/MetricsGroup/metrics-group';
+import { CardCourse } from '../components/CardCourse/card-course';
+import { CourseNotFound } from '../components/ui/CourseNotFound/course-not-found';
 
 export default function Home() {
-  const [search, setSearch] = useState('');
+  const [name, setName] = useState('');
   const { data, refetch } = useQuery<GetCoursesResponse>({
     queryKey: ['courses'],
     queryFn: async () => {
-      const response = await api.get('/courses', { params: { search } });
+      const response = await api.get(`/courses?name=${name}`);
       return response.data;
     },
   });
@@ -23,7 +25,7 @@ export default function Home() {
   }
 
   function clearSearch() {
-    setSearch('');
+    setName('');
     refetch();
   }
 
@@ -39,11 +41,21 @@ export default function Home() {
         />
 
         <SearchBar
-          value={search}
-          onChange={setSearch}
+          value={name}
+          onChange={setName}
           onSearch={onSearch}
           onClear={clearSearch}
         />
+
+        {data?.courses.map((course) => (
+          <CardCourse key={course.id} courses={course} />
+        ))}
+
+        {data?.courses.length === 0 && (
+          <View className="flex-1 items-center justify-center mt-8">
+            <CourseNotFound />
+          </View>
+        )}
       </View>
     </Screen>
   );

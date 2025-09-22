@@ -1,4 +1,5 @@
 import { View, Text } from 'react-native';
+import { Card } from '../ui/Card/card';
 
 interface CardMetricsProps {
   value: number;
@@ -21,11 +22,11 @@ export function CardMetrics({ value, title, color }: CardMetricsProps) {
   };
 
   return (
-    <View className="bg-zinc-800 border border-zinc-700 rounded-lg p-4 flex-1">
+    <Card>
       <View className="items-center justify-center gap-2">
         <Text className={`text-3xl font-bold ${getTextColor()}`}>{value}</Text>
         <Text className="text-zinc-300 font-semibold text-sm">{title}</Text>
       </View>
-    </View>
+    </Card>
   );
 }

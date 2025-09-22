@@ -1,7 +1,6 @@
 import { View, Text } from 'react-native';
 import { InputSearch } from '../ui/InputSearch/input-search';
-import { ButtonSearch } from '../ui/ButtonSearch/button-search';
-
+import { Button } from '../ui/ButtonSearch/button';
 interface SearchBarProps {
   value: string;
   onChange: (text: string) => void;
@@ -27,12 +26,12 @@ export function SearchBar({
         onSubmitEditing={onSearch}
       />
       <View className="flex-row gap-2 ml-auto">
-        <ButtonSearch variant="secondary" onPress={onClear}>
+        <Button variant="secondary" onPress={onClear}>
           <Text>Limpar</Text>
-        </ButtonSearch>
-        <ButtonSearch variant="default" onPress={onSearch}>
+        </Button>
+        <Button variant="default" onPress={onSearch}>
           <Text>Filtrar</Text>
-        </ButtonSearch>
+        </Button>
       </View>
     </View>
   );

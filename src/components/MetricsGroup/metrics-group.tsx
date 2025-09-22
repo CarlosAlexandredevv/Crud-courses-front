@@ -9,10 +9,16 @@ interface MetricsGroupProps {
 
 export function MetricsGroup({ total, active, inactive }: MetricsGroupProps) {
   return (
-    <View className="flex-row gap-4">
-      <CardMetrics value={total} title="Total" color="white" />
-      <CardMetrics value={active} title="Ativos" color="green" />
-      <CardMetrics value={inactive} title="Inativos" color="red" />
+    <View className="flex-row gap-3">
+      <View className="flex-1">
+        <CardMetrics value={total} title="Total" color="white" />
+      </View>
+      <View className="flex-1">
+        <CardMetrics value={active} title="Ativos" color="green" />
+      </View>
+      <View className="flex-1">
+        <CardMetrics value={inactive} title="Inativos" color="red" />
+      </View>
     </View>
   );
 }
